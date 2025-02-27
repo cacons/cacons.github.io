@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Registrati</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function getData() {
+            let channelID = "2825701"; 
+            let apiKey = "SJIIZ0GS9AZSGU8A";
+            let url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${apiKey}&results=10`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let output = "<h2>Album Registrati</h2><ul>";
+                    data.feeds.forEach(feed => {
+                        output += `<li><strong>Nome:</strong> ${feed.field1} <br>
+                                   <strong>Artista:</strong> ${feed.field2} <br>
+                                   <strong>Genere:</strong> ${feed.field3} <br>
+                                   <strong>Anno:</strong> ${feed.field4} <br>
+                                   <img src="${feed.field5}" alt="Copertina Album" style="width:100px;"></li><br>`;
+                    });
+                    output += "</ul>";
+                    document.getElementById("response").innerHTML = output;
+                })
+                .catch(error => console.error("Errore nella richiesta GET:", error));
+        }
+
+        window.onload = getData;
+    </script>
+</head>
+<body>
+    <h1>Album Registrati</h1>
+    <div id="response"></div>
+    <br>
+    <a href="index.html">Torna alla Home</a>
+</body>
+</html>
